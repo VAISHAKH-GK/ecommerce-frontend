@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./pages/*.js","./components/NavBar.js.js"],
+  content: ["./pages/*.js","./components/NavBar.js"],
   theme: {
     extend: {},
     colors: {
