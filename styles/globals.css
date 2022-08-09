@@ -8,7 +8,7 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: black;
+  background-color: black!important;
   color: white!important;
 }
 
@@ -21,15 +21,15 @@ a {
   box-sizing: border-box;
 }
 
-/* @media (prefers-color-scheme: dark) { */
-/*   html { */
-/*     color-scheme: dark; */
-/*   } */
-/*   body { */
-/*     color: white; */
-/*     background: black; */
-/*   } */
-/* } */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: black;
+  }
+}
 
 h1 {
   margin: 0;
