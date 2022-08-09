@@ -5,9 +5,9 @@ export default function Login() {
   return (
     <div>
       <NavBar></NavBar>
-      <div className='bg-grey-lighter min-h-screen flex flex-col'>
+      <div className='bg-grey-lighter min-h-screen flex flex-col col-12 '>
         <div className='container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2'>
-          <div className='bg-white px-6 py-8 rounded shadow-md text-black w-full'>
+          <div className='bg-white px-6 py-8 rounded shadow-md text-black w-full col-4 '>
             <h1 className='mb-8 text-3xl text-center'>Login</h1>
 
             <input
@@ -39,7 +39,6 @@ export default function Login() {
             >
               SignUp
             </Link>
-            .
           </div>
         </div>
       </div>

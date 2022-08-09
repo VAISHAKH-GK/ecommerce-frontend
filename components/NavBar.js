@@ -3,7 +3,9 @@ import Link from "next/link";
 export default function NavBar() {
   return (
     <nav className="navbar-expand-lg ps-5 pe-5 navbar navbar-dark bg-dark">
-      <a className="navbar-brand" href="#">Ecommerce</a>
+      <Link href="/" >
+        <a className="navbar-brand">Ecommerce</a>
+      </Link>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
