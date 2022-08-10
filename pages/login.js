@@ -1,13 +1,21 @@
-import Axios from '../stores/Axiso.js'
+import Axios from '../stores/Axios'
 import Link from 'next/link'
-import { useState, useContext, useEffect } from 'react'
-import NavBar from '../components/NavBar.js'
+import { useState, useContext } from 'react'
+import NavBar from '../components/NavBar'
 import { Context } from '../stores/Context'
+import { useRouter } from 'next/router'
 
 export default function Login() {
+  const router = useRouter()
+
   function login() {
     Axios.post('/user/login', { email, password }).then((res) => {
-      setUser(res.data)
+      if (res.data.status == true) {
+        setUser(res.data.user)
+        router.push('/')
+      } else {
+        alert(res.data.reason)
+      }
     })
   }
 
@@ -15,10 +23,6 @@ export default function Login() {
   const [password, setPassword] = useState('')
 
   const { setUser, user } = useContext(Context)
-
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
   return (
     <div>

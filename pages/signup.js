@@ -1,7 +1,36 @@
 import Link from 'next/link'
 import NavBar from '../components/NavBar'
+import Axios from '../stores/Axios'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 
 export default function SignUp() {
+  const router = useRouter()
+
+  function signup() {
+    if (password != confirmPassword) {
+      alert("Password doesn't match!")
+      return
+    }
+
+    const data = {
+      email,
+      name,
+      password
+    }
+
+    Axios.post('/user/signup', data).then((res) => {
+      if (res.data.status == true) {
+        router.push('/login')
+      }
+    })
+  }
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
   return (
     <div className='dark'>
       <NavBar></NavBar>
@@ -11,6 +40,8 @@ export default function SignUp() {
             <h1 className='mb-8 text-3xl text-center'>Sign up</h1>
             <input
               type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
               name='fullname'
               placeholder='Full Name'
@@ -18,6 +49,8 @@ export default function SignUp() {
 
             <input
               type='text'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
               name='email'
               placeholder='Email'
@@ -25,12 +58,16 @@ export default function SignUp() {
 
             <input
               type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
               name='password'
               placeholder='Password'
             />
             <input
               type='password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
               name='confirm_password'
               placeholder='Confirm Password'
@@ -38,6 +75,7 @@ export default function SignUp() {
 
             <button
               type='submit'
+              onClick={signup}
               className='w-full text-center py-3 rounded bg-green-700 text-white hover:bg-green-900 focus:outline-none my-1'
             >
               Create Account
