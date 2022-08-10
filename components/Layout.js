@@ -1,5 +1,6 @@
 import Head from "next/head"
 import 'bootstrap/dist/css/bootstrap.css'
+import ContextProvider from '../stores/Context.js'
 
 export default function Layout({ children }) {
   return (
@@ -7,7 +8,9 @@ export default function Layout({ children }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      {children}
+      <ContextProvider>
+        {children}
+      </ContextProvider>
     </>
   )
 }

@@ -1,7 +1,25 @@
-import Link from "next/link";
-import NavBar from "../components/NavBar.js"
+import Axios from '../stores/Axiso.js'
+import Link from 'next/link'
+import { useState, useContext, useEffect } from 'react'
+import NavBar from '../components/NavBar.js'
+import { Context } from '../stores/Context'
 
 export default function Login() {
+  function login() {
+    Axios.post('/user/login', { email, password }).then((res) => {
+      setUser(res.data)
+    })
+  }
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const { setUser, user } = useContext(Context)
+
+  useEffect(() => {
+    console.log(user)
+  }, [user])
+
   return (
     <div>
       <NavBar></NavBar>
@@ -12,6 +30,8 @@ export default function Login() {
 
             <input
               type='text'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
               name='email'
               placeholder='Email'
@@ -19,6 +39,8 @@ export default function Login() {
 
             <input
               type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
               name='password'
               placeholder='Password'
@@ -26,7 +48,8 @@ export default function Login() {
 
             <button
               type='submit'
-              className='w-full text-center py-3 rounded bg-green-700 text-white hover:bg-green-900 focus:outline-none my-1'
+              onClick={login}
+              className='w-full text-center py-3 rounded bg-green-600 text-white hover:bg-green-900 focus:outline-none my-1'
             >
               Login
             </button>
@@ -42,7 +65,6 @@ export default function Login() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }

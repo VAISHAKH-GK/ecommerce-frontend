@@ -1,9 +1,9 @@
-import Link from "next/link";
-import NavBar from "../components/NavBar"
+import Link from 'next/link'
+import NavBar from '../components/NavBar'
 
 export default function SignUp() {
   return (
-    <div className="dark" >
+    <div className='dark'>
       <NavBar></NavBar>
       <div className=' col-12 min-h-screen flex flex-col '>
         <div className=' container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2'>
@@ -62,7 +62,7 @@ export default function SignUp() {
           </div>
 
           <div className='text-grey-dark mt-6'>
-            Already have an account?  &nbsp;
+            Already have an account? &nbsp;
             <Link
               className='no-underline border-b border-blue text-blue'
               href='../login/'
@@ -72,7 +72,6 @@ export default function SignUp() {
           </div>
         </div>
       </div>
-
     </div>
   )
 }
