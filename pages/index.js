@@ -12,12 +12,12 @@ function Product({ item, description, price }) {
       <Image
         src='/image.png'
         alt='GFG logo served with static path of public directory'
-        height='350'
-        width='200'
+        height='250'
+        width='150'
       />
-      <h1>{item}</h1>
+      <p>{item}</p>
       <p>{description}</p>
-      <h3>{price}</h3>
+      <p>{price}</p>
     </div>
   )
 }
@@ -29,6 +29,7 @@ export default function Home({ isLoggedIn }) {
     function getUser() {
       return new Promise((resolve, reject) => {
         Axios.get('/user/getuser').then((res) => {
+          console.log(res.data)
           resolve(res.data)
         })
       })
@@ -42,7 +43,7 @@ export default function Home({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} />
       <div className={`${styles.main}`}>
         <div className='container'>
           <div className={`col-12 ${styles.products}`}>
@@ -60,10 +61,12 @@ export default function Home({ isLoggedIn }) {
 }
 
 export async function getServerSideProps({ req }) {
-  var cookie = req.cookies
+  var cookie = req.headers.cookie ?? ''
+  console.log('hello')
+  console.log(cookie)
   var response = await axios.get('http://localhost:9000/api/user/checklogin', {
-    headers: { Cookie: cookie },
     withCredentials: true,
+    headers: { cookie: cookie },
   })
   var isLoggedIn = response.data.status
   return {

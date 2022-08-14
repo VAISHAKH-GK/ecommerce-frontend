@@ -1,10 +1,6 @@
 import Link from 'next/link'
-import { useContext } from 'react'
-import { Context } from '../stores/Context'
 
-export default function NavBar() {
-  const { user } = useContext(Context)
-
+export default function NavBar({ isLoggedIn }) {
   return (
     <nav className='navbar-expand-lg ps-5 pe-5 navbar navbar-dark bg-dark'>
       <Link href='/'>
@@ -36,7 +32,7 @@ export default function NavBar() {
           </li>
         </ul>
         <div>
-          {!user ? (
+          {!isLoggedIn ? (
             <div>
               <Link href='/signup'>
                 <button className='btn btn-success'>SignUp</button>
