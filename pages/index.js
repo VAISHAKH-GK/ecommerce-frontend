@@ -29,7 +29,6 @@ export default function Home({ isLoggedIn }) {
     function getUser() {
       return new Promise((resolve, reject) => {
         Axios.get('/user/getuser').then((res) => {
-          console.log(res.data)
           resolve(res.data)
         })
       })
@@ -62,8 +61,6 @@ export default function Home({ isLoggedIn }) {
 
 export async function getServerSideProps({ req }) {
   var cookie = req.headers.cookie ?? ''
-  console.log('hello')
-  console.log(cookie)
   var response = await axios.get('http://localhost:9000/api/user/checklogin', {
     withCredentials: true,
     headers: { cookie: cookie },

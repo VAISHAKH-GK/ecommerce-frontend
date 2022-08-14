@@ -22,7 +22,7 @@ export default function NavBar({ isLoggedIn }) {
         <ul className='navbar-nav me-auto'>
           <li className='nav-item active'>
             <a className='nav-link' href='#'>
-              Home{' '}
+              Home
             </a>
           </li>
           <li className='nav-item'>
