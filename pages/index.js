@@ -3,8 +3,8 @@ import styles from '../styles/Home.module.css'
 import NavBar from '../components/NavBar.js'
 import { useContext, useEffect } from 'react'
 import { Context } from '../stores/Context'
-import { useRouter } from 'next/router'
 import Axios from '../stores/Axios'
+import axios from 'axios'
 
 function Product({ item, description, price }) {
   return (
@@ -22,19 +22,10 @@ function Product({ item, description, price }) {
   )
 }
 
-export default function Home() {
-  const router = useRouter()
-
-  const { user, setUser } = useContext(Context)
+export default function Home({ isLoggedIn }) {
+  const { setUser } = useContext(Context)
 
   useEffect(() => {
-    function isLoggedIn() {
-      return new Promise((resolve, reject) => {
-        Axios.get('/user/checklogin').then((res) => {
-          resolve(res.data.status)
-        })
-      })
-    }
     function getUser() {
       return new Promise((resolve, reject) => {
         Axios.get('/user/getuser').then((res) => {
@@ -42,13 +33,11 @@ export default function Home() {
         })
       })
     }
-    Promise.all([isLoggedIn(), getUser()]).then((res) => {
-      if (!res[0]) {
-        router.push('/login')
-      } else {
-        setUser(res[1])
-      }
-    })
+    if (isLoggedIn) {
+      getUser().then((response) => {
+        setUser(response)
+      })
+    }
   }, [])
 
   return (
@@ -68,4 +57,18 @@ export default function Home() {
       </div>
     </div>
   )
+}
+
+export async function getServerSideProps({ req }) {
+  var cookie = req.cookies
+  var response = await axios.get('http://localhost:9000/api/user/checklogin', {
+    headers: { Cookie: cookie },
+    withCredentials: true,
+  })
+  var isLoggedIn = response.data.status
+  return {
+    props: {
+      isLoggedIn,
+    },
+  }
 }
