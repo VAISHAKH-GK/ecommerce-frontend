@@ -1,20 +1,34 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import NavBar from '../../components/NavBar'
+import Axios from '../../stores/Axios'
+import { Context } from '../../stores/Context'
 
 export default function Admin({ isLoggedIn }) {
-  var router = useRouter()
+  const router = useRouter()
+  const { setAdminUser } = useContext(Context)
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    function getUser() {
+      return new Promise((resolve, reject) => {
+        Axios.get('/admin/getuser').then((res) => {
+          resolve(res.data)
+        })
+      })
+    }
+    if (isLoggedIn) {
+      getUser().then((response) => {
+        setAdminUser(response)
+      })
+    } else {
       router.push('/admin/login')
     }
-  })
+  }, [])
 
   return (
     <div>
-      <NavBar></NavBar>
+      <NavBar isLoggedIn={isLoggedIn}></NavBar>
       <div>
         <h1>Admin page</h1>
       </div>
