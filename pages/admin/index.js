@@ -28,7 +28,7 @@ export default function Admin({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar isLoggedIn={isLoggedIn}></NavBar>
+      <NavBar isLoggedIn={isLoggedIn} userType='admin'></NavBar>
       <div>
         <h1>Admin page</h1>
       </div>

@@ -1,6 +1,23 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import Axios from '../stores/Axios'
+import { Context } from '../stores/Context'
 
-export default function NavBar({ isLoggedIn }) {
+export default function NavBar({ isLoggedIn, userType }) {
+  const router = useRouter()
+  const { setUser } = useContext(Context)
+
+  function logout() {
+    if (userType == 'normal') {
+      Axios.get('/user/logout').then((res) => {
+        if (res.data.status) {
+          setUser(null)
+          router.push('/login')
+        }
+      })
+    }
+  }
   return (
     <nav className='navbar-expand-lg ps-5 pe-5 navbar navbar-dark bg-dark'>
       <Link href='/'>
@@ -43,7 +60,9 @@ export default function NavBar({ isLoggedIn }) {
             </div>
           ) : (
             <div>
-              <button className='btn btn-success'>LogOut</button>
+              <button className='btn btn-success' onClick={logout}>
+                LogOut
+              </button>
             </div>
           )}
         </div>
