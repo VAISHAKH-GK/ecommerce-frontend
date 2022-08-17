@@ -4,16 +4,22 @@ import { useContext } from 'react'
 import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
 
-export default function NavBar({ isLoggedIn, userType }) {
+export default function NavBar({ user, userType }) {
   const router = useRouter()
-  const { setUser } = useContext(Context)
+  const { setUser, setAdminUser } = useContext(Context)
 
   function logout() {
     if (userType == 'normal') {
       Axios.get('/user/logout').then((res) => {
         if (res.data.status) {
           setUser(null)
-          router.push('/login')
+        }
+      })
+    } else if (userType == 'admin') {
+      Axios.get('/admin/logout').then((res) => {
+        if (res.data.status) {
+          setAdminUser(null)
+          router.push('/admin/login')
         }
       })
     }
@@ -49,7 +55,7 @@ export default function NavBar({ isLoggedIn, userType }) {
           </li>
         </ul>
         <div>
-          {!isLoggedIn ? (
+          {!user ? (
             <div>
               <Link href='/signup'>
                 <button className='btn btn-success'>SignUp</button>

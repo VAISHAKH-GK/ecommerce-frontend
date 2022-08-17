@@ -23,7 +23,7 @@ function Product({ item, description, price }) {
 }
 
 export default function Home({ isLoggedIn }) {
-  const { setUser } = useContext(Context)
+  const { setUser, user } = useContext(Context)
 
   useEffect(() => {
     function getUser() {
@@ -42,7 +42,7 @@ export default function Home({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar isLoggedIn={isLoggedIn} userType="normal" />
+      <NavBar user={user} userType='normal' />
       <div className={`${styles.main}`}>
         <div className='container'>
           <div className={`col-12 ${styles.products}`}>

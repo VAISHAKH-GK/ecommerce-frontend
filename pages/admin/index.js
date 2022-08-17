@@ -7,7 +7,7 @@ import { Context } from '../../stores/Context'
 
 export default function Admin({ isLoggedIn }) {
   const router = useRouter()
-  const { setAdminUser } = useContext(Context)
+  const { setAdminUser, adminUser } = useContext(Context)
 
   useEffect(() => {
     function getUser() {
@@ -28,7 +28,7 @@ export default function Admin({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar isLoggedIn={isLoggedIn} userType='admin'></NavBar>
+      <NavBar user={adminUser} userType='admin'></NavBar>
       <div>
         <h1>Admin page</h1>
       </div>
