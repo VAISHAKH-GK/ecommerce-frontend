@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import NavBar from '../components/NavBar.js'
+import NavBar from '../components/NavBars/UserNavBar'
 import { useContext, useEffect } from 'react'
 import { Context } from '../stores/Context'
 import Axios from '../stores/Axios'

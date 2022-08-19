@@ -8,8 +8,8 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: black !important;
-  color: white !important;
+  /* background-color: black !important; */
+  /* color: white !important; */
 }
 
 a {
@@ -30,8 +30,8 @@ p {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    color: white!important;
+    background-color: black!important;
   }
 }
 

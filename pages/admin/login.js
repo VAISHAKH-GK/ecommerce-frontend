@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import NavBar from '../../components/NavBar'
-import  Axios  from '../../stores/Axios'
+import NavBar from '../../components/NavBars/AdminNavBar'
+import Axios from '../../stores/Axios'
 
 export default function Login() {
   const router = useRouter()
@@ -14,7 +14,6 @@ export default function Login() {
 
     Axios.post('/admin/login', data).then((res) => {
       if (res.data.status == true) {
-        console.log(res.data)
         router.push('/admin')
       } else {
         alert(res.data.reason)

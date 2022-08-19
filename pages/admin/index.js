@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
-import NavBar from '../../components/NavBar'
+import NavBar from '../../components/NavBars/AdminNavBar'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
 
@@ -42,7 +42,6 @@ export async function getServerSideProps({ req }) {
     headers: { cookie: cookie },
   })
   var isLoggedIn = response.data.status
-  console.log(isLoggedIn)
   return {
     props: {
       isLoggedIn,

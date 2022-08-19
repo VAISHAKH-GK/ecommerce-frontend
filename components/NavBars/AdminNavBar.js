@@ -1,28 +1,20 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
-import Axios from '../stores/Axios'
-import { Context } from '../stores/Context'
+import Axios from '../../stores/Axios'
+import { Context } from '../../stores/Context'
 
-export default function NavBar({ user, userType }) {
+export default function NavBar({ user }) {
   const router = useRouter()
-  const { setUser, setAdminUser } = useContext(Context)
+  const { setAdminUser } = useContext(Context)
 
   function logout() {
-    if (userType == 'normal') {
-      Axios.get('/user/logout').then((res) => {
-        if (res.data.status) {
-          setUser(null)
-        }
-      })
-    } else if (userType == 'admin') {
-      Axios.get('/admin/logout').then((res) => {
-        if (res.data.status) {
-          setAdminUser(null)
-          router.push('/admin/login')
-        }
-      })
-    }
+    Axios.get('/admin/logout').then((res) => {
+      if (res.data.status) {
+        setAdminUser(null)
+        router.push('/admin/login')
+      }
+    })
   }
   return (
     <nav className='navbar-expand-lg ps-5 pe-5 navbar navbar-dark bg-dark'>
@@ -52,6 +44,11 @@ export default function NavBar({ user, userType }) {
             <a className='nav-link' href='#'>
               Link
             </a>
+          </li>
+          <li>
+            <Link href='/admin/products'>
+              <p className='cursor-pointer nav-link'>products</p>
+            </Link>
           </li>
         </ul>
         <div>
