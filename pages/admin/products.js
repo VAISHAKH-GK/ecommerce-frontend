@@ -1,22 +1,55 @@
 import Image from 'next/image'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useContext, useEffect } from 'react'
+import NavBar from '../../components/NavBars/AdminNavBar'
+import { Context } from '../../stores/Context'
+import axios from 'axios'
+import Axios from '../../stores/Axios'
 
-export default function Products() {
+export default function Products({ isLoggedIn }) {
+  const router = useRouter()
+  const { setAdminUser, adminUser } = useContext(Context)
+
+  useEffect(() => {
+    function getUser() {
+      return new Promise((resolve, reject) => {
+        Axios.get('/admin/getuser').then((res) => {
+          resolve(res.data)
+        })
+      })
+    }
+    if (isLoggedIn && !adminUser) {
+      getUser().then((response) => {
+        setAdminUser(response)
+      })
+    } else if (!isLoggedIn) {
+      console.log(isLoggedIn)
+      setAdminUser(null)
+      router.push('/admin/login')
+    }
+  }, [])
+
   return (
     <div>
-      <main className='main' style={{ 'padding-top': '40px' }}>
+      <NavBar user={adminUser}></NavBar>
+      <main className='main text-white' style={{ paddingTop: '40px' }}>
         <section>
           <div className='container'>
             <div
               className='row '
-              style={{ display: 'flex', 'justify-content': 'right' }}
+              style={{ display: 'flex', justifyContent: 'right' }}
             >
-              <a href='/admin/add-product' className='btn btn-success mb-3'>
-                Add Product
-              </a>
+              <Link href='/admin/add-product'>
+                <p className='btn btn-success mb-3 float-left w-4'>
+                  Add Product
+                </p>
+              </Link>
             </div>
+
             <table
               className='table'
-              style={{ 'margin-top': '20px ' }}
+              style={{ marginTop: '20px ', color: 'white' }}
               id='productsTable'
             >
               <thead>
@@ -29,19 +62,21 @@ export default function Products() {
                   <th scope='col'>Edit</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr>
                   <td>Name</td>
                   <td>Category</td>
                   <td>Description</td>
                   <td>Price</td>
-                  {/* <td> */}
-                  {/*   <Image */}
-                  {/*     style={{ width: '50px', height: '50px' }} */}
-                  {/*     src='/productimage/{{this._id}}.jpg' */}
-                  {/*     alt='' */}
-                  {/*   /> */}
-                  {/* </td> */}
+                  <td>
+                    <Image
+                      src='/image.png'
+                      alt='GFG logo served with static path of public directory'
+                      height='80'
+                      width='50'
+                    />
+                  </td>
                   <td>
                     <a
                       href='/admin/edit-product?id={{this._id}}'
@@ -51,7 +86,6 @@ export default function Products() {
                     </a>
                     <a
                       href='/admin/delete-product?id={{this._id}}'
-                      /* onclick="return confirm('Are you sure to Delete {{this.Name}}')" */
                       className='btn btn-danger'
                     >
                       Delete
@@ -65,4 +99,18 @@ export default function Products() {
       </main>
     </div>
   )
+}
+
+export async function getServerSideProps({ req }) {
+  var cookie = req.headers.cookie ?? ''
+  var response = await axios.get('http://localhost:9000/api/admin/checklogin', {
+    withCredentials: true,
+    headers: { cookie: cookie },
+  })
+  var isLoggedIn = response.data.status
+  return {
+    props: {
+      isLoggedIn,
+    },
+  }
 }

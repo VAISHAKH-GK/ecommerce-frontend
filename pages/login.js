@@ -7,12 +7,12 @@ import { useRouter } from 'next/router'
 export default function Login() {
   const router = useRouter()
 
-  function login() {
+  function login(e) {
+    e.preventDefault()
     const data = {
       email,
       password,
     }
-
     Axios.post('/user/login', data).then((res) => {
       if (res.data.status == true) {
         router.push('/')
@@ -32,32 +32,33 @@ export default function Login() {
         <div className='container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2'>
           <div className='bg-white px-6 py-8 rounded shadow-md text-black w-full col-md-4 '>
             <h1 className='mb-8 text-3xl text-center'>Login</h1>
+            <form>
+              <input
+                type='text'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
+                name='email'
+                placeholder='Email'
+              />
 
-            <input
-              type='text'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
-              name='email'
-              placeholder='Email'
-            />
+              <input
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
+                name='password'
+                placeholder='Password'
+              />
 
-            <input
-              type='password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className='block border border-grey-light w-full p-3 rounded mb-4 text-white'
-              name='password'
-              placeholder='Password'
-            />
-
-            <button
-              type='submit'
-              onClick={login}
-              className='w-full text-center py-3 rounded bg-green-600 text-white hover:bg-green-900 focus:outline-none my-1'
-            >
-              Login
-            </button>
+              <button
+                type='submit'
+                onClick={(e) => login(e)}
+                className='w-full text-center py-3 rounded bg-green-600 text-white hover:bg-green-900 focus:outline-none my-1'
+              >
+                Login
+              </button>
+            </form>
           </div>
           <div className='text-grey-dark mt-6'>
             Dont have an account? &nbsp;

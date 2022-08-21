@@ -17,18 +17,19 @@ export default function Admin({ isLoggedIn }) {
         })
       })
     }
-    if (isLoggedIn) {
+    if (isLoggedIn && !adminUser) {
       getUser().then((response) => {
         setAdminUser(response)
       })
-    } else {
+    } else if (!isLoggedIn) {
+      setAdminUser(null)
       router.push('/admin/login')
     }
   }, [])
 
   return (
     <div>
-      <NavBar user={adminUser} userType='admin'></NavBar>
+      <NavBar user={adminUser}></NavBar>
       <div>
         <h1>Admin page</h1>
       </div>

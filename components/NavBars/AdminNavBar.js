@@ -47,7 +47,7 @@ export default function NavBar({ user }) {
           </li>
           <li>
             <Link href='/admin/products'>
-              <p className='cursor-pointer nav-link'>products</p>
+              <p className='cursor-pointer nav-link'>Products</p>
             </Link>
           </li>
         </ul>
