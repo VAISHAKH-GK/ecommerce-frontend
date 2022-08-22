@@ -36,14 +36,11 @@ export default function Products({ isLoggedIn }) {
       <main className='main text-white' style={{ paddingTop: '40px' }}>
         <section>
           <div className='container'>
-            <div
-              className='row '
-              style={{ display: 'flex', justifyContent: 'right' }}
-            >
+            <div className='row col-md-12'>
               <Link href='/admin/add-product'>
-                <p className='btn btn-success mb-3 float-left w-4'>
+                <button className='btn btn-success ml-auto col-md-2'>
                   Add Product
-                </p>
+                </button>
               </Link>
             </div>
 
@@ -86,7 +83,7 @@ export default function Products({ isLoggedIn }) {
                     </a>
                     <a
                       href='/admin/delete-product?id={{this._id}}'
-                      className='btn btn-danger'
+                      className='btn btn-danger ml-2'
                     >
                       Delete
                     </a>
