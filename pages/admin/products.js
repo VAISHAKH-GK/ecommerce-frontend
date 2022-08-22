@@ -24,7 +24,6 @@ export default function Products({ isLoggedIn }) {
         setAdminUser(response)
       })
     } else if (!isLoggedIn) {
-      console.log(isLoggedIn)
       setAdminUser(null)
       router.push('/admin/login')
     }
@@ -52,7 +51,6 @@ export default function Products({ isLoggedIn }) {
               <thead>
                 <tr>
                   <th scope='col'>Prodect-Name</th>
-                  <th scope='col'>Category</th>
                   <th scope='col'>Description</th>
                   <th scope='col'>Price</th>
                   <th scope='col'>Image</th>
@@ -63,7 +61,6 @@ export default function Products({ isLoggedIn }) {
               <tbody>
                 <tr>
                   <td>Name</td>
-                  <td>Category</td>
                   <td>Description</td>
                   <td>Price</td>
                   <td>
