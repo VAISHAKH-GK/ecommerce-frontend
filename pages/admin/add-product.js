@@ -4,6 +4,7 @@ import NavBar from '../../components/NavBars/AdminNavBar'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
 import axios from 'axios'
+import Image from 'next/image'
 
 export default function AddProduct({ isLoggedIn }) {
   var router = useRouter()
@@ -14,7 +15,9 @@ export default function AddProduct({ isLoggedIn }) {
   const [type, setType] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState(0)
-  /* const [image, setImage] = useState() */
+
+  const [image, setImage] = useState()
+  const [imageURL, setImageURL] = useState()
 
   useEffect(() => {
     function getUser() {
@@ -33,6 +36,14 @@ export default function AddProduct({ isLoggedIn }) {
       router.push('/admin/login')
     }
   }, [])
+
+  function imageHandler(e) {
+    var uploadedImage = e?.target?.files[0]
+    if (uploadedImage) {
+      setImage(uploadedImage)
+      setImageURL(URL.createObjectURL(uploadedImage))
+    }
+  }
 
   function addProduct(e) {
     e.preventDefault()
@@ -105,21 +116,22 @@ export default function AddProduct({ isLoggedIn }) {
                 placeholder='Price in rupee'
               />
             </div>
-            {/* <div className='form-group'> */}
-            {/*   <label htmlFor='image'>Image</label> */}
-            {/*   <input */}
-            {/*     type='file' */}
-            {/*     className='form-control mt-1' */}
-            {/*     id='Image' */}
-            {/*     accept='image/*' */}
-            {/*     name='image' */}
-            {/*   /> */}
-            {/* </div> */}
-
+            <div className='form-group'>
+              <label htmlFor='image'>Image</label>
+              <input
+                type='file'
+                className='form-control mt-1 mb-3'
+                id='Image'
+                accept='image/*'
+                name='image'
+                onChange={imageHandler}
+              />
+            </div>
+            <div>{imageURL ? <Image src={imageURL} className='mt-1' height={100} width={200} alt='no'></Image> : ''}</div>
             <button
               type='submit'
               onClick={addProduct}
-              className='btn btn-primary mt-4 '
+              className='btn btn-primary mt-7'
               id='sub-btn'
             >
               Submit
