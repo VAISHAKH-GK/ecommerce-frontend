@@ -54,10 +54,17 @@ export default function AddProduct({ isLoggedIn }) {
       description,
       price,
     }
-    console.log(data)
     Axios.post('/admin/addproduct', data).then((response) => {
-      if (response.data.status) {
-        window.confirm('Product added ')
+      if (response?.data?.status) {
+        var id = response.data.id
+        window.alert('Product added and Id is ' + id)
+        Axios.post(`/admin/addproductimage?id=${id}`, image).then(
+          (response) => {
+            if (response?.data?.status) {
+              window.alert('Product image saved')
+            }
+          }
+        )
       }
     })
   }
@@ -127,7 +134,19 @@ export default function AddProduct({ isLoggedIn }) {
                 onChange={imageHandler}
               />
             </div>
-            <div>{imageURL ? <Image src={imageURL} className='mt-1' height={100} width={200} alt='no'></Image> : ''}</div>
+            <div>
+              {imageURL ? (
+                <Image
+                  src={imageURL}
+                  className='mt-1'
+                  height={100}
+                  width={200}
+                  alt='no'
+                ></Image>
+              ) : (
+                ''
+              )}
+            </div>
             <button
               type='submit'
               onClick={addProduct}
