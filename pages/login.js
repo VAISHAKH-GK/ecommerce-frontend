@@ -60,7 +60,7 @@ export default function Login() {
               </button>
             </form>
           </div>
-          <div className='text-grey-dark mt-6'>
+          <div className='text-white mt-6'>
             Dont have an account? &nbsp;
             <Link
               className='no-underline border-b border-blue text-blue'

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import NavBar from '../components/NavBar'
+import NavBar from '../components/NavBars/UserNavBar'
 import Axios from '../stores/Axios'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -99,7 +99,7 @@ export default function SignUp() {
             </div>
           </div>
 
-          <div className='text-grey-dark mt-6'>
+          <div className='text-white mt-6'>
             Already have an account? &nbsp;
             <Link
               className='no-underline border-b border-blue text-blue'

@@ -5,19 +5,24 @@ import { useContext, useEffect } from 'react'
 import { Context } from '../stores/Context'
 import Axios from '../stores/Axios'
 import axios from 'axios'
+import Link from 'next/link'
 
-function Product({ item, description, price }) {
+function Product({ type, name, description, price }) {
   return (
-    <div className={`col-3 ${styles.product}`}>
+    <div className={`col-2 bg-white m-1 rounded-lg ${styles.product}`}>
       <Image
         src='/image.png'
         alt='GFG logo served with static path of public directory'
         height='250'
         width='150'
       />
-      <p>{item}</p>
+      <h5>{name}</h5>
+      <p>{type}</p>
       <p>{description}</p>
-      <p>{price}</p>
+      <p>Price :<b>{price}&nbsp;₹</b></p>
+      <Link href="" >
+        <button className='btn btn-primary mt-1 mb-1' >Add To Cart</button>
+      </Link>
     </div>
   )
 }
@@ -43,15 +48,51 @@ export default function Home({ isLoggedIn }) {
   return (
     <div>
       <NavBar user={user} userType='normal' />
-      <div className={`${styles.main}`}>
+      <div className={` ${styles.main}`}>
         <div className='container'>
-          <div className={`col-12 ${styles.products}`}>
-            <Product item='phone' description='good phone' price='10000' />
-            <Product item='phone' description='good phone' price='10000' />
-            <Product item='phone' description='good phone' price='10000' />
-            <Product item='phone' description='good phone' price='10000' />
-            <Product item='phone' description='good phone' price='10000' />
-            <Product item='phone' description='good phone' price='10000' />
+          <div className={`col-12 {styles.products}`}>
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
+            <Product
+              name='IPhone 12'
+              type='phone'
+              description='good phone'
+              price='10000'
+            />
           </div>
         </div>
       </div>
