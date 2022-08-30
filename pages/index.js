@@ -50,7 +50,7 @@ export default function Home({ isLoggedIn }) {
     if (isLoggedIn) {
       Promise.all([getUser(), getProducts()]).then((res) => {
         setUser(res[0])
-        setProducts(res[1].products)
+        setProducts(res[1])
       })
     } else {
       getProducts().then((res) => {

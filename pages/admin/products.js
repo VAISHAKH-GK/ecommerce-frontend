@@ -9,7 +9,8 @@ import Axios from '../../stores/Axios'
 
 export default function Products({ isLoggedIn }) {
   const router = useRouter()
-  const { setAdminUser, adminUser } = useContext(Context)
+  const { setAdminUser, adminUser, adminProducts, setAdminProducts } =
+    useContext(Context)
 
   useEffect(() => {
     function getUser() {
@@ -19,13 +20,25 @@ export default function Products({ isLoggedIn }) {
         })
       })
     }
+    function getProducts() {
+      return new Promise((resolve, reject) => {
+        Axios.get('/public/getproducts?number=5').then((res) => {
+          resolve(res.data)
+        })
+      })
+    }
     if (isLoggedIn && !adminUser) {
-      getUser().then((response) => {
-        setAdminUser(response)
+      Promise.all([getUser(), getProducts()]).then((res) => {
+        setAdminUser(res[0])
+        setAdminProducts(res[1])
       })
     } else if (!isLoggedIn) {
       setAdminUser(null)
       router.push('/admin/login')
+    } else {
+      getProducts().then((res) => {
+        setAdminProducts(res)
+      })
     }
   }, [])
 
@@ -51,6 +64,7 @@ export default function Products({ isLoggedIn }) {
               <thead>
                 <tr>
                   <th scope='col'>Prodect-Name</th>
+                  <th scope='col'>Type</th>
                   <th scope='col'>Description</th>
                   <th scope='col'>Price</th>
                   <th scope='col'>Image</th>
@@ -59,33 +73,38 @@ export default function Products({ isLoggedIn }) {
               </thead>
 
               <tbody>
-                <tr>
-                  <td>Name</td>
-                  <td>Description</td>
-                  <td>Price</td>
-                  <td>
-                    <Image
-                      src='/image.png'
-                      alt='GFG logo served with static path of public directory'
-                      height='80'
-                      width='50'
-                    />
-                  </td>
-                  <td>
-                    <a
-                      href='/admin/edit-product?id={{this._id}}'
-                      className='btn btn-primary'
-                    >
-                      Edit
-                    </a>
-                    <a
-                      href='/admin/delete-product?id={{this._id}}'
-                      className='btn btn-danger ml-2'
-                    >
-                      Delete
-                    </a>
-                  </td>
-                </tr>
+                {adminProducts.map((product, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>{product.name}</td>
+                      <td>{product.type}</td>
+                      <td>{product.description}</td>
+                      <td>{product.price}</td>
+                      <td>
+                        <Image
+                          src={`http://localhost:9000/api/public/getproductimage?id=${product._id}`}
+                          alt='GFG logo served with static path of public directory'
+                          height='100'
+                          width='100'
+                        />
+                      </td>
+                      <td>
+                        <a
+                          href='/admin/edit-product?id={{this._id}}'
+                          className='btn btn-primary'
+                        >
+                          Edit
+                        </a>
+                        <a
+                          href='/admin/delete-product?id={{this._id}}'
+                          className='btn btn-danger ml-2'
+                        >
+                          Delete
+                        </a>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
