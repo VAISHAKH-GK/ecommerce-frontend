@@ -4,6 +4,7 @@ import { Context } from '../../stores/Context'
 import { useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 import Axios from '../../stores/Axios'
+import { useRouter } from 'next/router'
 
 export default function EditProduct({ isLoggedIn, product }) {
   const { adminUser, setAdminUser } = useContext(Context)
@@ -17,6 +18,8 @@ export default function EditProduct({ isLoggedIn, product }) {
   const [imageURL, setImageURL] = useState(
     `http://localhost:9000/api/public/getproductimage?id=${product.id}`
   )
+
+  const router = useRouter()
 
   useEffect(() => {
     function getUser() {
