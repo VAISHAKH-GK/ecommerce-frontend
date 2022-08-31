@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
@@ -81,12 +80,11 @@ export default function Products({ isLoggedIn }) {
                       <td>{product.description}</td>
                       <td>{product.price}</td>
                       <td>
-                        <Image
+                        <img
                           src={`http://localhost:9000/api/public/getproductimage?id=${product._id}`}
                           alt='GFG logo served with static path of public directory'
                           height='80'
                           width='80'
-                          key={index}
                         />
                       </td>
                       <td>
