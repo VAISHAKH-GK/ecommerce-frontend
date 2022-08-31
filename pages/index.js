@@ -54,7 +54,7 @@ export default function Home({ isLoggedIn }) {
       })
     } else {
       getProducts().then((res) => {
-        setProducts(res.products)
+        setProducts(res)
       })
     }
   }, [])
@@ -69,18 +69,20 @@ export default function Home({ isLoggedIn }) {
       <div className={` ${styles.main}`}>
         <div className='container'>
           <div className={`col-12 {styles.products}`}>
-            {products.map((product, index) => {
-              return (
-                <Product
-                  key={index}
-                  name={product.name}
-                  type={product.type}
-                  description={product.description}
-                  price={product.price}
-                  id={product._id}
-                />
-              )
-            })}
+            {products
+              ? products.map((product, index) => {
+                  return (
+                    <Product
+                      key={index}
+                      name={product.name}
+                      type={product.type}
+                      description={product.description}
+                      price={product.price}
+                      id={product._id}
+                    />
+                  )
+                })
+              : ''}
           </div>
         </div>
       </div>
