@@ -86,6 +86,7 @@ export default function Products({ isLoggedIn }) {
                           alt='GFG logo served with static path of public directory'
                           height='80'
                           width='80'
+                          key={index}
                         />
                       </td>
                       <td>

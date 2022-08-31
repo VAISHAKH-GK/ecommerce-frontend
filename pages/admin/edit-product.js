@@ -47,6 +47,26 @@ export default function EditProduct({ isLoggedIn, product }) {
     }
   }
 
+  function editProduct(e) {
+    e.preventDefault()
+    if (!window.confirm('Update this Product ? ')) return
+    const data = {
+      name,
+      type,
+      description,
+      price,
+    }
+    Axios.put(`/admin/updateproduct?id=${product.id}`, data).then(
+      (response) => {
+        if (response?.data?.status && image) {
+          Axios.post(`/admin/addproductimage?id=${product.id}`, image)
+        }
+        alert('Product updated')
+        router.push('/admin/products')
+      }
+    )
+  }
+
   return (
     <div>
       <NavBar user={adminUser} />
@@ -127,7 +147,7 @@ export default function EditProduct({ isLoggedIn, product }) {
             </div>
             <button
               type='submit'
-              /* onClick={addProduct} */
+              onClick={editProduct}
               className='btn btn-primary mt-7'
               id='sub-btn'
             >

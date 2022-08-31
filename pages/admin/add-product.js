@@ -57,14 +57,9 @@ export default function AddProduct({ isLoggedIn }) {
     Axios.post('/admin/addproduct', data).then((response) => {
       if (response?.data?.status) {
         var id = response.data.id
-        window.alert('Product added and Id is ' + id)
-        Axios.post(`/admin/addproductimage?id=${id}`, image).then(
-          (response) => {
-            if (response?.data?.status) {
-              window.alert('Product image saved')
-            }
-          }
-        )
+        Axios.post(`/admin/addproductimage?id=${id}`, image)
+        window.alert('Product added ')
+        router.push('/admin/products')
       }
     })
   }
