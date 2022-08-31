@@ -84,23 +84,15 @@ export default function Products({ isLoggedIn }) {
                         <Image
                           src={`http://localhost:9000/api/public/getproductimage?id=${product._id}`}
                           alt='GFG logo served with static path of public directory'
-                          height='100'
-                          width='100'
+                          height='80'
+                          width='80'
                         />
                       </td>
                       <td>
-                        <a
-                          href='/admin/edit-product?id={{this._id}}'
-                          className='btn btn-primary'
-                        >
-                          Edit
-                        </a>
-                        <a
-                          href='/admin/delete-product?id={{this._id}}'
-                          className='btn btn-danger ml-2'
-                        >
-                          Delete
-                        </a>
+                        <Link href={`/admin/edit-product?id=${product._id}`}>
+                          <button className='btn btn-primary'> Edit</button>
+                        </Link>
+                        <button className='btn btn-danger ml-2'>Delete</button>
                       </td>
                     </tr>
                   )

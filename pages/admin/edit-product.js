@@ -1,23 +1,22 @@
-import { useRouter } from 'next/router'
-import { useContext, useEffect, useState } from 'react'
 import NavBar from '../../components/NavBars/AdminNavBar'
-import Axios from '../../stores/Axios'
-import { Context } from '../../stores/Context'
-import axios from 'axios'
 import Image from 'next/image'
+import { Context } from '../../stores/Context'
+import { useContext, useState, useEffect } from 'react'
+import axios from 'axios'
+import Axios from '../../stores/Axios'
 
-export default function AddProduct({ isLoggedIn }) {
-  var router = useRouter()
+export default function EditProduct({ isLoggedIn, product }) {
+  const { adminUser, setAdminUser } = useContext(Context)
 
-  const { setAdminUser, adminUser } = useContext(Context)
-
-  const [name, setName] = useState('')
-  const [type, setType] = useState('')
-  const [description, setDescription] = useState('')
-  const [price, setPrice] = useState(0)
+  const [name, setName] = useState(product.name)
+  const [type, setType] = useState(product.type)
+  const [description, setDescription] = useState(product.description)
+  const [price, setPrice] = useState(product.price)
 
   const [image, setImage] = useState()
-  const [imageURL, setImageURL] = useState()
+  const [imageURL, setImageURL] = useState(
+    `http://localhost:9000/api/public/getproductimage?id=${product.id}`
+  )
 
   useEffect(() => {
     function getUser() {
@@ -43,30 +42,6 @@ export default function AddProduct({ isLoggedIn }) {
       setImage(uploadedImage)
       setImageURL(URL.createObjectURL(uploadedImage))
     }
-  }
-
-  function addProduct(e) {
-    e.preventDefault()
-    if (!window.confirm('Add this Product ? ')) return
-    const data = {
-      name,
-      type,
-      description,
-      price,
-    }
-    Axios.post('/admin/addproduct', data).then((response) => {
-      if (response?.data?.status) {
-        var id = response.data.id
-        window.alert('Product added and Id is ' + id)
-        Axios.post(`/admin/addproductimage?id=${id}`, image).then(
-          (response) => {
-            if (response?.data?.status) {
-              window.alert('Product image saved')
-            }
-          }
-        )
-      }
-    })
   }
 
   return (
@@ -149,7 +124,7 @@ export default function AddProduct({ isLoggedIn }) {
             </div>
             <button
               type='submit'
-              onClick={addProduct}
+              /* onClick={addProduct} */
               className='btn btn-primary mt-7'
               id='sub-btn'
             >
@@ -161,17 +136,22 @@ export default function AddProduct({ isLoggedIn }) {
     </div>
   )
 }
-
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, query }) {
+  var id = query.id
   var cookie = req.headers.cookie ?? ''
   var response = await axios.get('http://localhost:9000/api/admin/checklogin', {
     withCredentials: true,
     headers: { cookie: cookie },
   })
   var isLoggedIn = response.data.status
+  response = await axios.get(
+    `http://localhost:9000/api/public/getproduct?id=${id}`
+  )
+  var product = response.data
   return {
     props: {
       isLoggedIn,
+      product,
     },
   }
 }
