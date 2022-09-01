@@ -33,14 +33,14 @@ export default function NavBar({ user }) {
       <div className='collapse navbar-collapse' id='navbarSupportedContent'>
         <ul className='navbar-nav me-auto'>
           <li className='nav-item active'>
-            <a className='nav-link' href='#'>
-              Home
-            </a>
+            <Link href='/'>
+              <p className='nav-link cursor-pointer'>Home</p>
+            </Link>
           </li>
           <li className='nav-item'>
-            <a className='nav-link' href='#'>
-              Link
-            </a>
+            <Link href='/cart'>
+              <p className='nav-link cursor-pointer'>Cart</p>
+            </Link>
           </li>
         </ul>
         <div>

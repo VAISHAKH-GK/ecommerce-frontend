@@ -32,21 +32,23 @@ function Product({ type, name, description, price, id }) {
 export default function Home({ isLoggedIn }) {
   const { setUser, user, products, setProducts } = useContext(Context)
 
+  function getUser() {
+    return new Promise((resolve, reject) => {
+      Axios.get('/user/getuser').then((res) => {
+        resolve(res.data)
+      })
+    })
+  }
+
+  function getProducts() {
+    return new Promise((resolve, reject) => {
+      Axios.get('/public/getproducts?number=5').then((res) => {
+        resolve(res.data)
+      })
+    })
+  }
+
   useEffect(() => {
-    function getUser() {
-      return new Promise((resolve, reject) => {
-        Axios.get('/user/getuser').then((res) => {
-          resolve(res.data)
-        })
-      })
-    }
-    function getProducts() {
-      return new Promise((resolve, reject) => {
-        Axios.get('/public/getproducts?number=5').then((res) => {
-          resolve(res.data)
-        })
-      })
-    }
     if (isLoggedIn) {
       Promise.all([getUser(), getProducts()]).then((res) => {
         setUser(res[0])
@@ -59,16 +61,12 @@ export default function Home({ isLoggedIn }) {
     }
   }, [])
 
-  useEffect(() => {
-    console.log(products)
-  }, [products])
-
   return (
     <div>
       <NavBar user={user} userType='normal' />
       <div className={` ${styles.main}`}>
         <div className='container'>
-          <div className={`col-12 {styles.products}`}>
+          <div className={`col-12 text-black {styles.products}`}>
             {products
               ? products.map((product, index) => {
                   return (
