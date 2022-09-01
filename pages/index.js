@@ -20,7 +20,7 @@ function Product({ type, name, description, price, id }) {
       <p>{type}</p>
       <p>{description}</p>
       <p>
-        Price :<b>{price}&nbsp;₹</b>
+        Price: <b>{price}&nbsp;₹</b>
       </p>
       <Link href=''>
         <button className='btn btn-primary mt-1 mb-1'>Add To Cart</button>

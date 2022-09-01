@@ -11,21 +11,23 @@ export default function Products({ isLoggedIn }) {
   const { setAdminUser, adminUser, adminProducts, setAdminProducts } =
     useContext(Context)
 
+  function getUser() {
+    return new Promise((resolve, reject) => {
+      Axios.get('/admin/getuser').then((res) => {
+        resolve(res.data)
+      })
+    })
+  }
+
+  function getProducts() {
+    return new Promise((resolve, reject) => {
+      Axios.get('/public/getproducts?number=5').then((res) => {
+        resolve(res.data)
+      })
+    })
+  }
+
   useEffect(() => {
-    function getUser() {
-      return new Promise((resolve, reject) => {
-        Axios.get('/admin/getuser').then((res) => {
-          resolve(res.data)
-        })
-      })
-    }
-    function getProducts() {
-      return new Promise((resolve, reject) => {
-        Axios.get('/public/getproducts?number=5').then((res) => {
-          resolve(res.data)
-        })
-      })
-    }
     if (isLoggedIn && !adminUser) {
       Promise.all([getUser(), getProducts()]).then((res) => {
         setAdminUser(res[0])
@@ -40,6 +42,17 @@ export default function Products({ isLoggedIn }) {
       })
     }
   }, [])
+
+  function deleteProduct(id) {
+    Axios.delete(`/admin/deleteproduct?id=${id}`).then((res) => {
+      if (res.data.status) {
+        getProducts().then((res) => {
+          setAdminProducts(res)
+          alert('Product deleted')
+        })
+      }
+    })
+  }
 
   return (
     <div>
@@ -91,7 +104,12 @@ export default function Products({ isLoggedIn }) {
                         <Link href={`/admin/edit-product?id=${product._id}`}>
                           <button className='btn btn-primary'> Edit</button>
                         </Link>
-                        <button className='btn btn-danger ml-2'>Delete</button>
+                        <button
+                          className='btn btn-danger ml-2'
+                          onClick={(e) => deleteProduct(product._id)}
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   )
