@@ -5,9 +5,17 @@ import { useContext, useEffect } from 'react'
 import { Context } from '../stores/Context'
 import Axios from '../stores/Axios'
 import axios from 'axios'
-import Link from 'next/link'
 
 function Product({ type, name, description, price, id }) {
+  function addToCart() {
+    Axios.patch(`/user/addtocart?id=${id}`).then((res) => {
+      if (res?.data?.status) {
+        alert('Product Added to Cart')
+      } else if (res?.data?.status == false) {
+        alert(res.data.reason)
+      }
+    })
+  }
   return (
     <div className={`bg-white rounded-lg ${styles.product}`}>
       <Image
@@ -22,9 +30,9 @@ function Product({ type, name, description, price, id }) {
       <p>
         Price: <b>{price}&nbsp;₹</b>
       </p>
-      <Link href=''>
-        <button className='btn btn-primary mt-1 mb-1'>Add To Cart</button>
-      </Link>
+      <button onClick={addToCart} className='btn btn-primary mt-1 mb-1'>
+        Add To Cart
+      </button>
     </div>
   )
 }
