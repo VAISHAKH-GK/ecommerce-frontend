@@ -2,7 +2,7 @@ import axios from 'axios'
 import styles from '../styles/Home.module.css'
 import { getURL } from 'next/dist/shared/lib/utils'
 import Image from 'next/image'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import NavBar from '../components/NavBars/UserNavBar'
 import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
@@ -26,8 +26,7 @@ function Product({ type, name, description, price, id }) {
   )
 }
 export default function Cart({ isLoggedIn }) {
-  const { setUser, user } = useContext(Context)
-  const [cartProducts, setCartProducts] = useState()
+  const { setUser, user, cartProducts, setCartProducts } = useContext(Context)
 
   function getUser() {
     return new Promise((resolve, reject) => {
@@ -55,24 +54,27 @@ export default function Cart({ isLoggedIn }) {
   }, [])
 
   return (
-    <div className={`text-black`} >
+    <div>
       <NavBar user={user} userType='normal' />
-      <div className='container'>
-        <h1>Cart</h1>
-        {cartProducts
-          ? cartProducts.map((product, index) => {
-              return (
-                <Product
-                  key={index}
-                  name={product.name}
-                  type={product.type}
-                  description={product.description}
-                  price={product.price}
-                  id={product._id}
-                />
-              )
-            })
-          : ''}
+      <div className={` ${styles.main}`}>
+        <div className='container'>
+          <div className={`col-12 text-black {styles.products}`}>
+            {cartProducts
+              ? cartProducts.map((product, index) => {
+                  return (
+                    <Product
+                      key={index}
+                      name={product.name}
+                      type={product.type}
+                      description={product.description}
+                      price={product.price}
+                      id={product._id}
+                    />
+                  )
+                })
+              : ''}
+          </div>
+        </div>
       </div>
     </div>
   )
