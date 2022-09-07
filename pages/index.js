@@ -28,7 +28,7 @@ export default function Home({ isLoggedIn }) {
           description,
           price,
         }
-        setCartProducts([...cartProducts, product])
+        setCartProducts([...cartProducts, { product, quantity: 1 }])
       }
     }
     return (

@@ -38,34 +38,40 @@ export default function Cart({ isLoggedIn }) {
     const [quantity, setQuantity] = useState(item.quantity)
     function increaseQuantity() {
       var newQuantity = quantity + 1
-      Axios.patch(
-        `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
-      ).then(() => {
-        setQuantity(newQuantity)
-      })
-    }
-
-    function decreaseQuantity() {
-      if (quantity > 1) {
-        var newQuantity = quantity - 1
+      if (isLoggedIn) {
         Axios.patch(
           `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
         ).then(() => {
           setQuantity(newQuantity)
         })
+      }
+    }
+
+    function decreaseQuantity() {
+      if (quantity > 1) {
+        var newQuantity = quantity - 1
+        if (isLoggedIn) {
+          Axios.patch(
+            `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
+          ).then(() => {
+            setQuantity(newQuantity)
+          })
+        }
       } else {
         alert("Quantity can't be lower than 1")
       }
     }
 
     function removeFromCart() {
-      Axios.delete(`/user/removefromcart?productId=${item.product._id}`).then(
-        () => {
-          getCartProducts().then((res) => {
-            setCartProducts(res)
-          })
-        }
-      )
+      if (isLoggedIn) {
+        Axios.delete(`/user/removefromcart?productId=${item.product._id}`).then(
+          () => {
+            getCartProducts().then((res) => {
+              setCartProducts(res)
+            })
+          }
+        )
+      }
     }
 
     return (
