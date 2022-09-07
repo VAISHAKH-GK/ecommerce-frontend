@@ -5,63 +5,6 @@ import NavBar from '../components/NavBars/UserNavBar'
 import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
 
-function Product({ item }) {
-  const [quantity, setQuantity] = useState(item.quantity)
-  function increaseQuantity() {
-    var newQuantity = quantity + 1
-    Axios.patch(
-      `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
-    ).then(() => {
-      setQuantity(newQuantity)
-    })
-  }
-  function decreaseQuantity() {
-    if (quantity > 1) {
-      var newQuantity = quantity - 1
-      Axios.patch(
-        `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
-      ).then(() => {
-        setQuantity(newQuantity)
-      })
-    } else {
-      alert('Quantity can\'t be lower than 1')
-    }
-  }
-  return (
-    <tr>
-      <td>
-        <Image
-          height='50px'
-          width='50px'
-          src={`http://localhost:9000/api/public/getproductimage?id=${item.product._id}`}
-          alt=''
-        />
-      </td>
-      <td>{item.product.name}</td>
-      <td>
-        <button
-          className='cart-items-counter  mr-3 btn btn-primary'
-          onClick={decreaseQuantity}
-        >
-          -
-        </button>
-        <span>{quantity}</span>
-        <button
-          className='cart-items-counter ml-3 btn btn-primary'
-          onClick={increaseQuantity}
-        >
-          +
-        </button>
-      </td>
-      <td>₹{item.product.price}</td>
-      <td>
-        <a href='' className='btn btn-danger'>
-          Remove
-        </a>
-      </td>
-    </tr>
-  )
-}
 export default function Cart({ isLoggedIn }) {
   const { setUser, user, cartProducts, setCartProducts } = useContext(Context)
 
@@ -90,6 +33,76 @@ export default function Cart({ isLoggedIn }) {
       })
     }
   }, [])
+
+  function Product({ item }) {
+    const [quantity, setQuantity] = useState(item.quantity)
+    function increaseQuantity() {
+      var newQuantity = quantity + 1
+      Axios.patch(
+        `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
+      ).then(() => {
+        setQuantity(newQuantity)
+      })
+    }
+
+    function decreaseQuantity() {
+      if (quantity > 1) {
+        var newQuantity = quantity - 1
+        Axios.patch(
+          `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
+        ).then(() => {
+          setQuantity(newQuantity)
+        })
+      } else {
+        alert("Quantity can't be lower than 1")
+      }
+    }
+
+    function removeFromCart() {
+      Axios.delete(`/user/removefromcart?productId=${item.product._id}`).then(
+        () => {
+          getCartProducts().then((res) => {
+            setCartProducts(res)
+          })
+        }
+      )
+    }
+
+    return (
+      <tr>
+        <td>
+          <Image
+            height='50px'
+            width='50px'
+            src={`http://localhost:9000/api/public/getproductimage?id=${item.product._id}`}
+            alt=''
+          />
+        </td>
+        <td>{item.product.name}</td>
+        <td>
+          <button
+            className='cart-items-counter  mr-3 btn btn-primary'
+            onClick={decreaseQuantity}
+          >
+            -
+          </button>
+          <span>{quantity}</span>
+          <button
+            className='cart-items-counter ml-3 btn btn-primary'
+            onClick={increaseQuantity}
+          >
+            +
+          </button>
+        </td>
+        <td>₹{item.product.price}</td>
+        <td>
+          <button onClick={removeFromCart} className='btn btn-danger'>
+            Remove
+          </button>
+        </td>
+      </tr>
+    )
+  }
 
   return (
     <div>
