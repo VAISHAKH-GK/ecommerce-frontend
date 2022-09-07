@@ -1,5 +1,4 @@
 import axios from 'axios'
-import styles from '../styles/Home.module.css'
 import Image from 'next/image'
 import { useContext, useEffect } from 'react'
 import NavBar from '../components/NavBars/UserNavBar'
@@ -76,9 +75,11 @@ export default function Cart({ isLoggedIn }) {
             </tr>
           </thead>
           <tbody>
-            {cartProducts.map((item, index) => {
-              return <Product item={item} key={index} />
-            })}
+            {cartProducts
+              ? cartProducts.map((item, index) => {
+                  return <Product item={item} key={index} />
+                })
+              : ''}
           </tbody>
         </table>
       </div>
