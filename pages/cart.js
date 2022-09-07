@@ -16,12 +16,16 @@ function Product({ item }) {
     })
   }
   function decreaseQuantity() {
-    var newQuantity = quantity - 1
-    Axios.patch(
-      `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
-    ).then(() => {
-      setQuantity(newQuantity)
-    })
+    if (quantity > 1) {
+      var newQuantity = quantity - 1
+      Axios.patch(
+        `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
+      ).then(() => {
+        setQuantity(newQuantity)
+      })
+    } else {
+      alert('Quantity can\'t be lower than 1')
+    }
   }
   return (
     <tr>
