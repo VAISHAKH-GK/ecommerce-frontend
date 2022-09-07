@@ -13,7 +13,7 @@ export default function Home({ isLoggedIn }) {
     const { cartProducts, setCartProducts } = useContext(Context)
     function addToCart() {
       if (isLoggedIn) {
-        Axios.patch(`/user/addtocart?id=${id}`).then((res) => {
+        Axios.patch(`/user/addtocart?productId=${id}`).then((res) => {
           if (res?.data?.status) {
             alert('Product Added to Cart')
           } else if (res?.data?.status == false) {
