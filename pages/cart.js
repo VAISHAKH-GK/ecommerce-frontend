@@ -1,11 +1,28 @@
 import axios from 'axios'
 import Image from 'next/image'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import NavBar from '../components/NavBars/UserNavBar'
 import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
 
 function Product({ item }) {
+  const [quantity, setQuantity] = useState(item.quantity)
+  function increaseQuantity() {
+    var newQuantity = quantity + 1
+    Axios.patch(
+      `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
+    ).then(() => {
+      setQuantity(newQuantity)
+    })
+  }
+  function decreaseQuantity() {
+    var newQuantity = quantity - 1
+    Axios.patch(
+      `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
+    ).then(() => {
+      setQuantity(newQuantity)
+    })
+  }
   return (
     <tr>
       <td>
@@ -18,9 +35,19 @@ function Product({ item }) {
       </td>
       <td>{item.product.name}</td>
       <td>
-        <button className='cart-items-counter  mr-3 btn btn-primary'>-</button>
-        <span>{item.quantity}</span>
-        <button className='cart-items-counter ml-3 btn btn-primary'>+</button>
+        <button
+          className='cart-items-counter  mr-3 btn btn-primary'
+          onClick={decreaseQuantity}
+        >
+          -
+        </button>
+        <span>{quantity}</span>
+        <button
+          className='cart-items-counter ml-3 btn btn-primary'
+          onClick={increaseQuantity}
+        >
+          +
+        </button>
       </td>
       <td>₹{item.product.price}</td>
       <td>
