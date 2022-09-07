@@ -1,28 +1,35 @@
 import axios from 'axios'
 import styles from '../styles/Home.module.css'
-import { getURL } from 'next/dist/shared/lib/utils'
 import Image from 'next/image'
 import { useContext, useEffect } from 'react'
 import NavBar from '../components/NavBars/UserNavBar'
 import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
 
-function Product({ type, name, description, price, id }) {
+function Product({ item }) {
   return (
-    <div className={`bg-white rounded-lg ${styles.product}`}>
-      <Image
-        src={`http://localhost:9000/api/public/getproductimage?id=${id}`}
-        alt='GFG logo served with static path of public directory'
-        height='200'
-        width='200'
-      />
-      <h5>{name}</h5>
-      <p>{type}</p>
-      <p>{description}</p>
-      <p>
-        Price: <b>{price}&nbsp;₹</b>
-      </p>
-    </div>
+    <tr>
+      <td>
+        <Image
+          height='50px'
+          width='50px'
+          src={`http://localhost:9000/api/public/getproductimage?id=${item.product._id}`}
+          alt=''
+        />
+      </td>
+      <td>{item.product.name}</td>
+      <td>
+        <button className='cart-items-counter  mr-3 btn btn-primary'>-</button>
+        <span>{item.quantity}</span>
+        <button className='cart-items-counter ml-3 btn btn-primary'>+</button>
+      </td>
+      <td>₹{item.product.price}</td>
+      <td>
+        <a href='' className='btn btn-danger'>
+          Remove
+        </a>
+      </td>
+    </tr>
   )
 }
 export default function Cart({ isLoggedIn }) {
@@ -48,6 +55,7 @@ export default function Cart({ isLoggedIn }) {
     if (isLoggedIn) {
       Promise.all([getUser(), getCartProducts()]).then((res) => {
         setUser(res[0])
+        console.log(res[1])
         setCartProducts(res[1])
       })
     }
@@ -56,25 +64,23 @@ export default function Cart({ isLoggedIn }) {
   return (
     <div>
       <NavBar user={user} userType='normal' />
-      <div className={` ${styles.main}`}>
-        <div className='container'>
-          <div className={`col-12 text-black {styles.products}`}>
-            {cartProducts
-              ? cartProducts.map((product, index) => {
-                  return (
-                    <Product
-                      key={index}
-                      name={product.name}
-                      type={product.type}
-                      description={product.description}
-                      price={product.price}
-                      id={product._id}
-                    />
-                  )
-                })
-              : ''}
-          </div>
-        </div>
+      <div className='container'>
+        <table className='table text-white ' style={{ 'margin-top': '20px' }}>
+          <thead>
+            <tr>
+              <th scope='col'>Product</th>
+              <th scope='col'>Name</th>
+              <th scope='col'>Quauntity</th>
+              <th scope='col'>Price</th>
+              <th scope='col'>Remove</th>
+            </tr>
+          </thead>
+          <tbody>
+            {cartProducts.map((item, index) => {
+              return <Product item={item} key={index} />
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   )
