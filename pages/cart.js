@@ -9,7 +9,7 @@ export default function Cart({ isLoggedIn }) {
   const { setUser, user, cartProducts, setCartProducts } = useContext(Context)
 
   function getUser() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       Axios.get('/user/getuser').then((res) => {
         resolve(res?.data)
       })
@@ -17,7 +17,7 @@ export default function Cart({ isLoggedIn }) {
   }
 
   function getCartProducts() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       Axios.get('/user/getcartproducts').then((res) => {
         resolve(res?.data?.products)
       })
@@ -37,24 +37,26 @@ export default function Cart({ isLoggedIn }) {
   function Product({ item }) {
     const [quantity, setQuantity] = useState(item.quantity)
     function increaseQuantity() {
-      var newQuantity = quantity + 1
       if (isLoggedIn) {
-        Axios.patch(
-          `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
-        ).then(() => {
-          setQuantity(newQuantity)
+        const data = {
+          count: 1,
+          productId: item.product._id,
+        }
+        Axios.put('/user/addtocart', data).then(() => {
+          setQuantity(quantity + 1)
         })
       }
     }
 
     function decreaseQuantity() {
       if (quantity > 1) {
-        var newQuantity = quantity - 1
         if (isLoggedIn) {
-          Axios.patch(
-            `/user/addtocart?productId=${item.product._id}&&count=${newQuantity}`
-          ).then(() => {
-            setQuantity(newQuantity)
+          var data = {
+            count: -1,
+            productId: item.product._id,
+          }
+          Axios.put('/user/addtocart', data).then(() => {
+            setQuantity(quantity - 1)
           })
         }
       } else {
