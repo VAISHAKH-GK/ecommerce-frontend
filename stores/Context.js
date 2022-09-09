@@ -7,6 +7,7 @@ export default function ContextProvider({ children }) {
   const [adminUser, setAdminUser] = useState(null)
   const [products, setProducts] = useState([])
   const [adminProducts, setAdminProducts] = useState([])
+  const [total, setTotal] = useState()
   const [cartProducts, setCartProducts] = useState([])
 
   return (
@@ -22,6 +23,8 @@ export default function ContextProvider({ children }) {
         setAdminProducts,
         cartProducts,
         setCartProducts,
+        total,
+        setTotal,
       }}
     >
       {children}
