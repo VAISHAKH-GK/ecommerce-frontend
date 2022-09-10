@@ -1,17 +1,34 @@
 import axios from 'axios'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import NavBar from '../components/NavBars/UserNavBar'
 import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
 
 function Product({ item, isLoggedIn }) {
-  const { setTotal } = useContext(Context)
+  const { setTotal, setCartProducts } = useContext(Context)
   const [quantity, setQuantity] = useState()
 
   useEffect(() => {
     setQuantity(item.quantity)
   }, [item.quantity])
+
+  function getCartProducts() {
+    return new Promise((resolve) => {
+      Axios.get('/user/getcartproducts').then((res) => {
+        resolve(res?.data?.products)
+      })
+    })
+  }
+
+  function getTotal() {
+    return new Promise((resolve) => {
+      Axios.get('/user/gettotal').then((res) => {
+        resolve(res?.data.total)
+      })
+    })
+  }
 
   function increaseQuantity() {
     if (isLoggedIn) {
@@ -50,7 +67,15 @@ function Product({ item, isLoggedIn }) {
       Axios.delete(`/user/removefromcart?productId=${item.product._id}`).then(
         () => {
           getCartProducts().then((res) => {
-            setCartProducts(res)
+            if (res) {
+              setCartProducts(res)
+              getTotal().then((res) => {
+                setTotal(res)
+              })
+            } else {
+              setCartProducts([])
+              setTotal(0)
+            }
           })
         }
       )
@@ -97,6 +122,8 @@ export default function Cart({ isLoggedIn }) {
   const { setUser, user, cartProducts, setCartProducts, total, setTotal } =
     useContext(Context)
 
+  var router = useRouter()
+
   function getUser() {
     return new Promise((resolve) => {
       Axios.get('/user/getuser').then((res) => {
@@ -121,12 +148,20 @@ export default function Cart({ isLoggedIn }) {
     })
   }
 
+  function placeOrder() {
+    router.push('/place-order')
+  }
+
   useEffect(() => {
     if (isLoggedIn) {
-      Promise.all([getUser(), getCartProducts(), getTotal()]).then((res) => {
+      Promise.all([getUser(), getTotal(), getCartProducts()]).then((res) => {
         setUser(res[0])
-        setCartProducts(res[1])
-        setTotal(res[2])
+        setTotal(res[1])
+        if (res[2]) {
+          setCartProducts(res[2])
+        } else {
+          setCartProducts([])
+        }
       })
     }
   }, [])
@@ -151,7 +186,12 @@ export default function Cart({ isLoggedIn }) {
             })}
           </tbody>
         </table>
-        <h2>Total Amount is: ₹&nbsp;{total}</h2>
+        <div className='inline-block'>
+          <h2>Total Amount is: ₹&nbsp;{total}</h2>
+          <button onClick={placeOrder} className='btn btn-success'>
+            Place Order
+          </button>
+        </div>
       </div>
     </div>
   )

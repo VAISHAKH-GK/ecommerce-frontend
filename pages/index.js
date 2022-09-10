@@ -57,7 +57,7 @@ export default function Home({ isLoggedIn }) {
   }
 
   function getUser() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       Axios.get('/user/getuser').then((res) => {
         resolve(res.data)
       })
@@ -65,7 +65,7 @@ export default function Home({ isLoggedIn }) {
   }
 
   function getProducts() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       Axios.get('/public/getproducts?number=5').then((res) => {
         resolve(res.data)
       })
