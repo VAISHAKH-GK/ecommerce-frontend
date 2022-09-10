@@ -7,7 +7,11 @@ import { Context } from '../stores/Context'
 
 function Product({ item, isLoggedIn }) {
   const { setTotal } = useContext(Context)
-  const [quantity, setQuantity] = useState(item.quantity)
+  const [quantity, setQuantity] = useState()
+
+  useEffect(() => {
+    setQuantity(item.quantity)
+  }, [item.quantity])
 
   function increaseQuantity() {
     if (isLoggedIn) {
@@ -147,7 +151,7 @@ export default function Cart({ isLoggedIn }) {
             })}
           </tbody>
         </table>
-        <h1>{total}</h1>
+        <h2>Total Amount is: ₹&nbsp;{total}</h2>
       </div>
     </div>
   )
