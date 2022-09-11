@@ -1,12 +1,15 @@
 import axios from 'axios'
 import NavBar from '../components/NavBars/UserNavBar'
 import { useRouter } from 'next/router'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Context } from '../stores/Context'
 import Axios from '../stores/Axios'
 
 export default function PlaceOrder({ isLoggedIn }) {
   const { user, setUser } = useContext(Context)
+
+  const [payMethod, setPayMethod] = useState('COD')
+
   var router = useRouter()
 
   function getUser() {
@@ -15,6 +18,23 @@ export default function PlaceOrder({ isLoggedIn }) {
         resolve(res?.data)
       })
     })
+  }
+
+  function checkOut(e) {
+    e.preventDefault()
+    if (payMethod === 'COD') {
+      if (confirm('Confirm Order ?')) {
+        alert('Order placed')
+      }
+    } else if (payMethod === 'ONLINE') {
+      alert('Online payment currently not available')
+    } else {
+      alert('Select a payment method')
+    }
+  }
+
+  function changePayMethod(e) {
+    setPayMethod(e.target.value)
   }
 
   useEffect(() => {
@@ -31,7 +51,7 @@ export default function PlaceOrder({ isLoggedIn }) {
     <div>
       <NavBar user={user} userType='normal' />
       <div className='container'>
-        <section className=' col-md-12' style={{ 'margin-top': '20vh' }}>
+        <section className=' col-md-12' style={{ marginTop: '20vh' }}>
           <form action='' id='payment' method='post'>
             <div className='row'>
               <div className='  col-md-5'>
@@ -91,7 +111,7 @@ export default function PlaceOrder({ isLoggedIn }) {
                     type='text'
                     name='userId'
                     id=''
-                    value='{{user._id}}'
+                    value={user?._id}
                     hidden
                   />
                 </div>
@@ -101,8 +121,8 @@ export default function PlaceOrder({ isLoggedIn }) {
                   className='solid '
                   style={{
                     ' border': '2px solid',
-                    'border-radius': '10px',
-                    'border-color': 'grey',
+                    borderRadius: '10px',
+                    borderColor: 'grey',
                     padding: '20px',
                     height: '260px',
                   }}
@@ -114,8 +134,8 @@ export default function PlaceOrder({ isLoggedIn }) {
                   <div>
                     <h5
                       style={{
-                        'padding-bottom': '10px',
-                        'padding-top': '10px',
+                        paddingBottom: '10px',
+                        paddingTop: '10px',
                       }}
                     >
                       Payment method
@@ -123,8 +143,11 @@ export default function PlaceOrder({ isLoggedIn }) {
                     <input
                       type='radio'
                       id='COD'
-                      name='pay_method'
                       value='COD'
+                      default
+                      name='pay_method'
+                      onChange={changePayMethod}
+                      checked={payMethod === 'COD'}
                     />
                     <label htmlFor='COD'>COD</label>
                     <br />
@@ -133,12 +156,16 @@ export default function PlaceOrder({ isLoggedIn }) {
                       id='Online'
                       name='pay_method'
                       value='ONLINE'
+                      readOnly
+                      onChange={changePayMethod}
+                      checked={payMethod === 'ONLINE'}
                     />
                     <label htmlFor='Online'>Online</label>
                     <br />
                     <button
                       className='float-right btn btn-primary'
                       type='submit'
+                      onClick={checkOut}
                     >
                       Checkout
                     </button>
