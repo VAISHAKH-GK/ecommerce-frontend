@@ -9,6 +9,10 @@ export default function PlaceOrder({ isLoggedIn }) {
   const { user, setUser } = useContext(Context)
 
   const [payMethod, setPayMethod] = useState('COD')
+  const [address, setAddress] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [number, setNumber] = useState(0)
 
   var router = useRouter()
 
@@ -21,10 +25,19 @@ export default function PlaceOrder({ isLoggedIn }) {
   }
 
   function checkOut(e) {
+    var data = {
+      name,
+      address,
+      email,
+      number,
+      payMethod,
+    }
     e.preventDefault()
     if (payMethod === 'COD') {
       if (confirm('Confirm Order ?')) {
-        alert('Order placed')
+        Axios.post('/user/placeorder', data).then((res) => {
+          alert('Orer Placed')
+        })
       }
     } else if (payMethod === 'ONLINE') {
       alert('Online payment currently not available')
@@ -52,7 +65,7 @@ export default function PlaceOrder({ isLoggedIn }) {
       <NavBar user={user} userType='normal' />
       <div className='container'>
         <section className=' col-md-12' style={{ marginTop: '20vh' }}>
-          <form action='' id='payment' method='post'>
+          <form id='payment' method='post'>
             <div className='row'>
               <div className='  col-md-5'>
                 <div className='mb-3'>
@@ -70,6 +83,8 @@ export default function PlaceOrder({ isLoggedIn }) {
                     id='Name'
                     placeholder='Enter your name'
                     name='Name'
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className='mb-3'>
@@ -82,6 +97,8 @@ export default function PlaceOrder({ isLoggedIn }) {
                     id='Address'
                     placeholder='Shippment Address'
                     name='Address'
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
                 <div className='mb-3'>
@@ -94,6 +111,8 @@ export default function PlaceOrder({ isLoggedIn }) {
                     id='Email'
                     placeholder='Email Address'
                     name='Email'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className='mb-3'>
@@ -106,13 +125,8 @@ export default function PlaceOrder({ isLoggedIn }) {
                     id='Mobile'
                     placeholder='Mobile Number'
                     name='Mobile'
-                  />
-                  <input
-                    type='text'
-                    name='userId'
-                    id=''
-                    value={user?._id}
-                    hidden
+                    value={number}
+                    onChange={(e) => setNumber(e.target.value)}
                   />
                 </div>
               </div>
