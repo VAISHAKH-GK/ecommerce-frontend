@@ -9,6 +9,7 @@ export default function ContextProvider({ children }) {
   const [adminProducts, setAdminProducts] = useState([])
   const [total, setTotal] = useState()
   const [cartProducts, setCartProducts] = useState([])
+  const [orders, setOrders] = useState([])
 
   return (
     <Context.Provider
@@ -25,6 +26,8 @@ export default function ContextProvider({ children }) {
         setCartProducts,
         total,
         setTotal,
+        orders,
+        setOrders
       }}
     >
       {children}

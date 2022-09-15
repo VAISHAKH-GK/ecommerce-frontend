@@ -25,24 +25,25 @@ export default function PlaceOrder({ isLoggedIn }) {
   }
 
   function checkOut(e) {
-    var data = {
+    const date = new Date()
+    const now = date.toString()
+
+    const data = {
       name,
       address,
       email,
       number,
       payMethod,
+      date: now,
     }
     e.preventDefault()
-    if (payMethod === 'COD') {
-      if (confirm('Confirm Order ?')) {
-        Axios.post('/user/placeorder', data).then((res) => {
+    if (confirm('Confirm Order ?')) {
+      Axios.post('/user/placeorder', data).then((res) => {
+        if (res.data.status) {
           alert('Orer Placed')
-        })
-      }
-    } else if (payMethod === 'ONLINE') {
-      alert('Online payment currently not available')
-    } else {
-      alert('Select a payment method')
+          router.push('/orders')
+        }
+      })
     }
   }
 
