@@ -6,6 +6,22 @@ import Axios from '../stores/Axios'
 import { Context } from '../stores/Context'
 
 export default function Orders({ isLoggedIn }) {
+  function Order({ order }) {
+    return (
+      <tr>
+        <td>{order.date}</td>
+        <td>{order.total}</td>
+        <td>{order.deliveryDetails.address}</td>
+        <td>{order.deliveryDetails.mobile}</td>
+        <td>{order.paymentMethod}</td>
+        <td>{order.status}</td>
+        <td>
+          <button className='btn btn-primary'>View Products</button>
+        </td>
+      </tr>
+    )
+  }
+
   const router = useRouter()
 
   const { user, setUser, orders, setOrders } = useContext(Context)
@@ -21,6 +37,7 @@ export default function Orders({ isLoggedIn }) {
   function getOrders() {
     return new Promise((resolve, reject) => {
       Axios.get('/user/getorders').then((res) => {
+        if (!res.data) res.data = []
         resolve(res.data)
       })
     })
@@ -37,18 +54,29 @@ export default function Orders({ isLoggedIn }) {
     }
   }, [])
 
-  useEffect(() => {
-    console.log('orders')
-    console.log(orders)
-  }, [orders])
-
   return (
     <div>
-      <NavBar user={user} userType='normal'></NavBar>
+      <NavBar user={user} userType='normal' />
       <div className='container'>
-        <div>
-          <h1>HAI</h1>
-        </div>
+        <h1 className='mt-6 '>Orders</h1>
+        <table className='table text-white' style={{ marginTop: '20px' }}>
+          <thead>
+            <tr>
+              <th scope='col'>Date</th>
+              <th scope='col'>Price</th>
+              <th scope='col'>Address</th>
+              <th scope='col'>Phone</th>
+              <th scope='col'>Payment</th>
+              <th scope='col'>Status</th>
+              <th scope='col'>Products</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order, index) => {
+              return <Order key={index} order={order} />
+            })}
+          </tbody>
+        </table>
       </div>
     </div>
   )
