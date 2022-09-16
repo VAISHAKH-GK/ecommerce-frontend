@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useContext } from 'react'
 import NavBar from '../components/NavBars/UserNavBar'
@@ -16,7 +17,9 @@ export default function Orders({ isLoggedIn }) {
         <td>{order.paymentMethod}</td>
         <td>{order.status}</td>
         <td>
-          <button className='btn btn-primary'>View Products</button>
+          <Link href={`/order-products?orderId=${order._id}`}>
+            <button className='btn btn-primary'>View Products</button>
+          </Link>
         </td>
       </tr>
     )
