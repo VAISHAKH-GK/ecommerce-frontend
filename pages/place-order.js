@@ -8,7 +8,7 @@ import Axios from '../stores/Axios'
 export default function PlaceOrder({ isLoggedIn }) {
   const { user, setUser } = useContext(Context)
 
-  const [payMethod, setPayMethod] = useState('COD')
+  const [paymentMethod, setPaymentMethod] = useState('COD')
   const [address, setAddress] = useState('')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -24,6 +24,30 @@ export default function PlaceOrder({ isLoggedIn }) {
     })
   }
 
+  function razorpay(order, key) {
+    var options = {
+      key: key, // Enter the Key ID generated from the Dashboard
+      amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      currency: order.currency,
+      order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      handler: () => {
+        alert('Payment successful')
+        router.push('/orders')
+      },
+      prefill: {
+        name: name,
+        email: email,
+        contact: number,
+      },
+    }
+    var rzp = new Razorpay(options)
+    rzp.on('payment.failed',() => {
+      alert('Payment Faild')
+      router.push('/')
+    })
+    rzp.open()
+  }
+
   function checkOut(e) {
     const date = new Date()
     const now = date.toString()
@@ -33,22 +57,24 @@ export default function PlaceOrder({ isLoggedIn }) {
       address,
       email,
       number,
-      payMethod,
+      paymentMethod,
       date: now,
     }
     e.preventDefault()
     if (confirm('Confirm Order ?')) {
-      Axios.post('/user/placeorder', data).then((res) => {
-        if (res.data.status) {
+      Axios.post('/user/placeorder', data).then(({ data }) => {
+        if (data.status === 'DONE') {
           alert('Orer Placed')
           router.push('/orders')
+        } else if (data.status === 'PENDING') {
+          razorpay(data.orderData, data.key)
         }
       })
     }
   }
 
   function changePayMethod(e) {
-    setPayMethod(e.target.value)
+    setPaymentMethod(e.target.value)
   }
 
   useEffect(() => {
@@ -162,7 +188,7 @@ export default function PlaceOrder({ isLoggedIn }) {
                       default
                       name='pay_method'
                       onChange={changePayMethod}
-                      checked={payMethod === 'COD'}
+                      checked={paymentMethod === 'COD'}
                     />
                     <label htmlFor='COD'>COD</label>
                     <br />
@@ -173,7 +199,7 @@ export default function PlaceOrder({ isLoggedIn }) {
                       value='ONLINE'
                       readOnly
                       onChange={changePayMethod}
-                      checked={payMethod === 'ONLINE'}
+                      checked={paymentMethod === 'ONLINE'}
                     />
                     <label htmlFor='Online'>Online</label>
                     <br />

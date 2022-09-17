@@ -57,7 +57,6 @@ export default function OrderProducts({ isLoggedIn }) {
       Promise.all([getUser(), getOrderProducts()]).then((res) => {
         setUser(res[0])
         setOrderProducts(res[1])
-        console.log(res[1])
       })
     }
   }, [])
