@@ -85,35 +85,39 @@ export default function Products({ isLoggedIn }) {
               </thead>
 
               <tbody>
-                {adminProducts.map((product, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{product.name}</td>
-                      <td>{product.type}</td>
-                      <td>{product.description}</td>
-                      <td>{product.price}</td>
-                      <td>
-                        <img
-                          src={`http://localhost:9000/api/public/getproductimage?id=${product._id}`}
-                          alt='GFG logo served with static path of public directory'
-                          height='80'
-                          width='80'
-                        />
-                      </td>
-                      <td>
-                        <Link href={`/admin/edit-product?id=${product._id}`}>
-                          <button className='btn btn-primary'> Edit</button>
-                        </Link>
-                        <button
-                          className='btn btn-danger ml-2'
-                          onClick={(e) => deleteProduct(product._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  )
-                })}
+                {adminProducts
+                  ? adminProducts.map((product, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{product.name}</td>
+                          <td>{product.type}</td>
+                          <td>{product.description}</td>
+                          <td>{product.price}</td>
+                          <td>
+                            <img
+                              src={`http://localhost:9000/api/public/getproductimage?id=${product._id}`}
+                              alt='GFG logo served with static path of public directory'
+                              height='80'
+                              width='80'
+                            />
+                          </td>
+                          <td>
+                            <Link
+                              href={`/admin/edit-product?id=${product._id}`}
+                            >
+                              <button className='btn btn-primary'> Edit</button>
+                            </Link>
+                            <button
+                              className='btn btn-danger ml-2'
+                              onClick={(e) => deleteProduct(product._id)}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  : ''}
               </tbody>
             </table>
           </div>

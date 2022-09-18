@@ -32,7 +32,16 @@ export default function PlaceOrder({ isLoggedIn }) {
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       handler: () => {
         alert('Payment successful')
-        router.push('/orders')
+        Axios.patch(`/user/paymentdone?orderId=${order.receipt}`).then(
+          ({ data }) => {
+            if (data.status) {
+              router.push('/orders')
+            } else {
+              alert('Please Log In')
+              router.push('/login')
+            }
+          }
+        )
       },
       prefill: {
         name: name,
@@ -41,7 +50,7 @@ export default function PlaceOrder({ isLoggedIn }) {
       },
     }
     var rzp = new Razorpay(options)
-    rzp.on('payment.failed',() => {
+    rzp.on('payment.failed', () => {
       alert('Payment Faild')
       router.push('/')
     })

@@ -38,7 +38,7 @@ export default function Orders({ isLoggedIn }) {
   }
 
   function getOrders() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       Axios.get('/user/getorders').then((res) => {
         if (!res.data) res.data = []
         resolve(res.data)
