@@ -24,24 +24,26 @@ export default function PlaceOrder({ isLoggedIn }) {
     })
   }
 
+  function verifyOnlinePayment(payment, orderId) {
+    Axios.post('/user/verifypayment', { payment, orderId }).then(({ data }) => {
+      if (data.status) {
+        alert('Payment successful')
+        router.push('/orders')
+      } else {
+        alert('Payment Failed')
+        router.push('/')
+      }
+    })
+  }
+
   function razorpay(order, key) {
     var options = {
       key: key, // Enter the Key ID generated from the Dashboard
       amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       currency: order.currency,
       order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      handler: () => {
-        alert('Payment successful')
-        Axios.patch(`/user/paymentdone?orderId=${order.receipt}`).then(
-          ({ data }) => {
-            if (data.status) {
-              router.push('/orders')
-            } else {
-              alert('Please Log In')
-              router.push('/login')
-            }
-          }
-        )
+      handler: (response) => {
+        verifyOnlinePayment(response, order.receipt)
       },
       prefill: {
         name: name,
