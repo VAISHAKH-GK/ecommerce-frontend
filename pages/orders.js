@@ -59,7 +59,7 @@ export default function Orders({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={user} userType='normal' />
+      <NavBar user={user} page='orders' />
       <div className='container'>
         <h1 className='mt-6 '>Orders</h1>
         <table className='table text-white' style={{ marginTop: '20px' }}>

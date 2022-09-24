@@ -168,7 +168,7 @@ export default function Cart({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={user} userType='normal' />
+      <NavBar user={user} page='cart' />
       <div className='container'>
         <table className='table text-white' style={{ marginTop: '20px' }}>
           <thead>

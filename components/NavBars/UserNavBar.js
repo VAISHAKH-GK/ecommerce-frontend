@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
 
-export default function NavBar({ user }) {
+export default function NavBar({ user, page }) {
   const { setUser } = useContext(Context)
 
   function logout() {

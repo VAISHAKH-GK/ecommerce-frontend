@@ -87,7 +87,7 @@ export default function Home({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={user} userType='normal' />
+      <NavBar user={user} page='index' />
       <div className={` ${styles.main}`}>
         <div className='container'>
           <div className={`col-12 text-black {styles.products}`}>

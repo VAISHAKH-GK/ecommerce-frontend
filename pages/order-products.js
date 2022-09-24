@@ -63,7 +63,7 @@ export default function OrderProducts({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={user} type='normal' />
+      <NavBar user={user} page='order-products' />
       <div className='container'>
         <div className={`col-12 text-black {styles.products}`}>
           {orderProducts

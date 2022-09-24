@@ -100,7 +100,7 @@ export default function PlaceOrder({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={user} userType='normal' />
+      <NavBar user={user} page='place-order' />
       <div className='container'>
         <section className=' col-md-12' style={{ marginTop: '20vh' }}>
           <form id='payment' method='post'>
