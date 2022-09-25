@@ -1,11 +1,13 @@
 import Link from 'next/link'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
 import styles from '../../styles/UserNavBar.module.css'
 
 export default function NavBar({ user, page }) {
-  const { setUser } = useContext(Context)
+  const { setUser, setProducts } = useContext(Context)
+
+  const [search, setSearch] = useState()
 
   function logout() {
     Axios.get('/user/logout').then((res) => {
@@ -13,6 +15,28 @@ export default function NavBar({ user, page }) {
         setUser(null)
       }
     })
+  }
+
+  function getProducts() {
+    return new Promise((resolve) => {
+      Axios.get('/public/getproducts?number=5').then((res) => {
+        resolve(res.data)
+      })
+    })
+  }
+
+  function searchProduct(e) {
+    e.preventDefault()
+    if (search != '') {
+      Axios.get(`/public/searchproduct?search=${search}`).then(({ data }) => {
+        console.log(data)
+        setProducts(data)
+      })
+    } else {
+      getProducts().then((res) => {
+        setProducts(res)
+      })
+    }
   }
 
   return (
@@ -50,20 +74,27 @@ export default function NavBar({ user, page }) {
             </Link>
           </li>
         </ul>
-        <form className={styles.searchForm} >
-          <input
-            className={styles.searchArea}
-            type='search'
-            placeholder='Search'
-            aria-label='Search'
-          />
-          <button
-            className={`btn btn-primary ${styles.searchButton}`}
-            type='submit'
-          >
-            Search
-          </button>
-        </form>
+        {page == 'index' ? (
+          <form className={styles.searchForm}>
+            <input
+              className={styles.searchArea}
+              type='search'
+              placeholder='Search'
+              aria-label='Search'
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <button
+              className={`btn btn-primary ${styles.searchButton}`}
+              type='submit'
+              onClick={searchProduct}
+            >
+              Search
+            </button>
+          </form>
+        ) : (
+          ''
+        )}
         {!user ? (
           <div>
             <Link href='/signup'>
