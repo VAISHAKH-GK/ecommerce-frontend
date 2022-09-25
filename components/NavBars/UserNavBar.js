@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useContext } from 'react'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
+import styles from '../../styles/UserNavBar.module.css'
 
 export default function NavBar({ user, page }) {
   const { setUser } = useContext(Context)
@@ -13,6 +14,7 @@ export default function NavBar({ user, page }) {
       }
     })
   }
+
   return (
     <nav className='navbar-expand-lg ps-5 pe-5 navbar navbar-dark bg-dark'>
       <Link href='/'>
@@ -48,24 +50,36 @@ export default function NavBar({ user, page }) {
             </Link>
           </li>
         </ul>
-        <div>
-          {!user ? (
-            <div>
-              <Link href='/signup'>
-                <button className='btn btn-success'>SignUp</button>
-              </Link>
-              <Link href='/login'>
-                <button className='btn btn-success ml-2 '>Login</button>
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <button className='btn btn-success' onClick={logout}>
-                LogOut
-              </button>
-            </div>
-          )}
-        </div>
+        <form className={styles.searchForm} >
+          <input
+            className={styles.searchArea}
+            type='search'
+            placeholder='Search'
+            aria-label='Search'
+          />
+          <button
+            className={`btn btn-primary ${styles.searchButton}`}
+            type='submit'
+          >
+            Search
+          </button>
+        </form>
+        {!user ? (
+          <div>
+            <Link href='/signup'>
+              <button className='btn btn-success'>SignUp</button>
+            </Link>
+            <Link href='/login'>
+              <button className='btn btn-success ml-2 '>Login</button>
+            </Link>
+          </div>
+        ) : (
+          <div>
+            <button className='btn btn-success' onClick={logout}>
+              LogOut
+            </button>
+          </div>
+        )}
       </div>
     </nav>
   )
