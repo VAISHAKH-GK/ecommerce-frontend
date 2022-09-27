@@ -13,6 +13,7 @@ export default function PlaceOrder({ isLoggedIn }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [number, setNumber] = useState(0)
+  const [total, setTotal] = useState(0)
 
   var router = useRouter()
 
@@ -20,6 +21,14 @@ export default function PlaceOrder({ isLoggedIn }) {
     return new Promise((resolve) => {
       Axios.get('/user/getuser').then((res) => {
         resolve(res?.data)
+      })
+    })
+  }
+
+  function getTotal() {
+    return new Promise((resolve) => {
+      Axios.get('/user/gettotal').then((res) => {
+        resolve(res?.data.total)
       })
     })
   }
@@ -92,8 +101,12 @@ export default function PlaceOrder({ isLoggedIn }) {
     if (!isLoggedIn) {
       router.push('/login')
     } else {
-      getUser().then((res) => {
-        setUser(res)
+      /* getUser().then((res) => { */
+      /*   setUser(res) */
+      /* }) */
+      Promise.all([getUser(), getTotal()]).then((res) => {
+        setUser(res[0])
+        setTotal(res[1])
       })
     }
   }, [])
@@ -180,7 +193,7 @@ export default function PlaceOrder({ isLoggedIn }) {
                   }}
                 >
                   <div>
-                    <h3 className='font-weight-bold'>Total Amount : ₹100</h3>
+                    <h3 className='font-weight-bold'>Total Amount : {total}</h3>
                   </div>
                   <hr />
                   <div>
