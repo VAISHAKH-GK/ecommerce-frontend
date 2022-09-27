@@ -45,6 +45,11 @@ export default function NavBar({ user }) {
               <p className='nav-link cursor-pointer'>Products</p>
             </Link>
           </li>
+          <li className='nav-item'>
+            <Link href='/admin/orders'>
+              <p className='nav-link cursor-pointer'>Orders</p>
+            </Link>
+          </li>
         </ul>
         <div>
           {!user ? (

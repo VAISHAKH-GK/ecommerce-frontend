@@ -1,11 +1,12 @@
 import axios from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useContext, useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import NavBar from '../../components/NavBars/AdminNavBar'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
 
-export default function Admin({ isLoggedIn }) {
+export default function Orders({ isLoggedIn }) {
   const router = useRouter()
   const { setAdminUser, adminUser } = useContext(Context)
 
@@ -29,14 +30,13 @@ export default function Admin({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={adminUser}></NavBar>
-      <div>
-        <h1>Admin page</h1>
+      <NavBar user={adminUser} />
+      <div className='container' >
+        <h1>Orders page</h1>
       </div>
     </div>
   )
 }
-
 export async function getServerSideProps({ req }) {
   var cookie = req.headers.cookie ?? ''
   var response = await axios.get('http://localhost:9000/api/admin/checklogin', {
