@@ -39,7 +39,6 @@ export default function Orders({ isLoggedIn }) {
   function getAllOrders() {
     return new Promise((resolve, reject) => {
       Axios.get('/admin/getallorders').then(({ data }) => {
-        console.log(data.orders)
         resolve(data.orders)
       })
     })

@@ -46,7 +46,6 @@ export default function OrderProducts({ isLoggedIn }) {
   function getOrderProducts() {
     return new Promise((resolve) => {
       Axios.get(`/admin/getorderproducts?orderId=${orderId}`).then(({data}) => {
-        console.log(data)
         resolve(data)
       })
     })
