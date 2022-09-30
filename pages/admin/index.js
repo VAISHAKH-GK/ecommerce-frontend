@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
 import NavBar from '../../components/NavBars/AdminNavBar'
@@ -29,9 +30,17 @@ export default function Admin({ isLoggedIn }) {
 
   return (
     <div>
-      <NavBar user={adminUser}></NavBar>
-      <div>
+      <NavBar user={adminUser} />
+      <div className='container mt-10'>
         <h1>Admin page</h1>
+        <div className='mt-6'>
+          <Link href='/admin/products' >
+            <button className='btn btn-primary w-40' >Go To Products</button>
+          </Link>
+          <Link href='/admin/orders' >
+            <button className='btn btn-primary ml-5 w-40' >Go To Orders</button>
+          </Link>
+        </div>
       </div>
     </div>
   )
