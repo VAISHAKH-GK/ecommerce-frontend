@@ -29,6 +29,7 @@ export default function NavBar({ user, page }) {
     e.preventDefault()
     if (search != '') {
       Axios.get(`/public/searchproduct?search=${search}`).then(({ data }) => {
+        setProducts(data)
       })
     } else {
       getProducts().then((res) => {
