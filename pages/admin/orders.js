@@ -1,13 +1,20 @@
 import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useContext } from 'react'
+import { useEffect, useContext, useState } from 'react'
 import NavBar from '../../components/NavBars/AdminNavBar'
 import Axios from '../../stores/Axios'
 import { Context } from '../../stores/Context'
 
 export default function Orders({ isLoggedIn }) {
   function Order({ order }) {
+    const [status, setStatus] = useState(order.status)
+
+    function changeStatus(e) {
+      Axios.patch(`/admin/changeorderstatus?orderId=${order._id}&&status=${e.target.value}`)
+      setStatus(e.target.value)
+    }
+
     return (
       <tr>
         <td>{order.date}</td>
@@ -15,7 +22,18 @@ export default function Orders({ isLoggedIn }) {
         <td>{order.deliveryDetails.address}</td>
         <td>{order.deliveryDetails.mobile}</td>
         <td>{order.paymentMethod}</td>
-        <td>{order.status}</td>
+        <td>
+          <select
+            value={status}
+            onChange={changeStatus}
+            className='bg-gray-800 text-white w-28 text-center'
+          >
+            <option value='pending'>Pending</option>
+            <option value='placed'>Placed</option>
+            <option value='shipped'>Shipped</option>
+            <option value='delivered'>Delivered</option>
+          </select>
+        </td>
         <td>
           <Link href={`/admin/order-products?orderId=${order._id}`}>
             <button className='btn btn-primary'>View Products</button>
